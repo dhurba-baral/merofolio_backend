@@ -11,10 +11,34 @@ router.post('/user/signup', async(req, res) => {
         }
     
     await user.save();
-    res.status(201).send(user.toObject());
+
+    //to hide the private data
+    const publicProfile = user.toObject();
+    delete publicProfile.password;
+
+    res.status(201).send(publicProfile);
+    
     } catch (error) {
         res.status(400).send(error);
     }
 })
+
+router.post('/user/login', async(req, res) => {
+    try {
+        const user=await User.findOne({email:req.body.email, password:req.body.password});
+        if(!user){
+            res.status(401).send({errorMessage:'Invalid Login'});
+        }
+
+        //hide the private data
+        const publicProfile = user.toObject();
+        delete publicProfile.password;
+
+        res.status(200).send(publicProfile);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+})
+
 
 module.exports = router;
