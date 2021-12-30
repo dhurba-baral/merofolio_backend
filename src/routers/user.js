@@ -69,4 +69,34 @@ router.post('/user/logout', auth, async(req, res) => {
     }
 })
 
+router.patch('/user/update', auth, async(req, res) => {
+    const user=req.user;
+    const updates=Object.keys(req.body);
+    try{
+        updates.forEach((update)=>{
+            user[update]=req.body[update];
+        })
+        await user.save();
+
+        //to hide the private data
+        const publicProfile = user.toObject();
+        delete publicProfile.password;
+        delete publicProfile.tokens;
+
+        res.status(200).send(publicProfile);
+    }catch(error){
+        res.status(400).send(error);
+    }
+})
+
+router.delete('/user/delete', auth, async(req, res) => {
+    try {
+        const user=req.user;
+        const deletedUser = await User.findByIdAndDelete(user._id);
+        res.status(200).send({user:deletedUser,message:'User deleted successfully'});
+    } catch (error) {
+        res.status(400).send(error);
+    }
+})
+
 module.exports = router;
