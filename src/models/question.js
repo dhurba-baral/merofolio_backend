@@ -15,6 +15,13 @@ const questionSchema = new mongoose.Schema({
         timestamps:true
 });
 
+//virtual field to get the replies by the question
+questionSchema.virtual('replies', {
+    ref: 'Reply',
+    localField: '_id',
+    foreignField: 'question'
+});
+
 const Question = mongoose.model('Question', questionSchema);
 
 module.exports = Question;
