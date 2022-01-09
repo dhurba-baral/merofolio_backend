@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt=require('bcryptjs');
+const Question = require('./question')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -40,7 +41,17 @@ const userSchema = new mongoose.Schema({
             required:true
         }
     }],
+},{
+        timestamps:true
+    }
     
+)
+
+//virtual field of questions created by the user
+userSchema.virtual('question', {
+    ref: 'Question',
+    localField: '_id',
+    foreignField: 'createdBy'
 })
 
 //to hash the password before saving

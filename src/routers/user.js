@@ -14,7 +14,7 @@ router.post('/user/signup', async(req, res) => {
     
     await user.save();
 
-    await user.generateAuthToken();
+    const token=await user.generateAuthToken();
 
 
     //to hide the private data
@@ -22,7 +22,7 @@ router.post('/user/signup', async(req, res) => {
     delete publicProfile.password;
     // delete publicProfile.tokens;
 
-    res.status(201).send(publicProfile);
+    res.status(201).send({publicProfile, token});
     
     } catch (error) {
         res.status(400).send(error);
@@ -39,14 +39,14 @@ router.post('/user/login', async(req, res) => {
             if(!compared){
                 res.status(401).send({errorMessage:'Wrong Password.'});
             }else{
-        await findUserByEmail.generateAuthToken();
+        const token=await findUserByEmail.generateAuthToken();
 
         //hide the private data
         const publicProfile = findUserByEmail.toObject();
         delete publicProfile.password;
         //delete publicProfile.tokens;
 
-        res.status(200).send(publicProfile);
+        res.status(200).send({publicProfile, token});
             }
         }
     } catch (error) {
