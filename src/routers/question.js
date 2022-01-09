@@ -18,6 +18,10 @@ router.post('/discussionForum/question',auth, async(req, res) => {
 router.get('/discussionForum/question', async(req, res) => {
     try {
         const question=await Question.find();
+        if(!question){
+            return res.status(404).send({errorMessage:'No question found'});
+        }
+        question.reverse()
         res.status(200).send(question);
     } catch (error) {
         res.status(400).send(error);
