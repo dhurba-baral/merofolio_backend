@@ -16,13 +16,27 @@ router.post('/discussionForum/question',auth, async(req, res) => {
 })
 
 router.get('/discussionForum/question', async(req, res) => {
+    const regexs=req.query.fieldInput
     try {
+        if(regexs){
+            Question.find({$or:[{text:{$regex:regexs,$options:'$i'}}]}).then((data)=>{
+                if(data.length>10){
+                    data=data.slice(0,10);
+                    data.reverse();
+                    res.status(200).send(data)
+                }else{
+                    data.reverse();
+                  res.status(200).send(data)
+                }
+            })
+        }else{
         const question=await Question.find();
         if(!question){
             return res.status(404).send({errorMessage:'No question found'});
         }
         question.reverse()
         res.status(200).send(question);
+    }
     } catch (error) {
         res.status(400).send(error);
     }
