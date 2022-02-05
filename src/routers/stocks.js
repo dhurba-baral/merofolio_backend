@@ -27,4 +27,19 @@ router.get('/stocks',auth,async(req, res) => {
     }
 })
 
+//delete a stock by the id
+router.delete('/stocks/:id',auth,async(req, res) => {
+    try {
+        const stock = await Stock.findOneAndDelete({_id: req.params.id, createdBy: req.user._id});
+        if(!stock){
+            return res.status(404).send({
+                errorMessage: 'Stock not found'
+            });
+        }
+        res.send(stock);
+    } catch (error) {
+        res.status(500).send();
+    }
+})
+
 module.exports = router;
