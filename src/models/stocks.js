@@ -1,6 +1,10 @@
 const mongoose= require('mongoose');
 
 const stockSchema = new mongoose.Schema({
+    nameOfCompany: {
+        type: String,
+        required: true
+    },
     numberOfShares:{
         type:Number,
         required:true,

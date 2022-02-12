@@ -27,6 +27,31 @@ router.get('/stocks',auth,async(req, res) => {
     }
 })
 
+//update the stock by the id
+router.patch('/stocks/:id',auth,async(req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['nameOfCompany','numberOfShares','price'];
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValidOperation) {
+        return res.status(400).send({
+            errorMessage: 'Invalid updates!'
+        });
+    }
+    try {
+        const stock = await Stock.findOne({ _id: req.params.id, createdBy: req.user._id });
+        if (!stock) {
+            return res.status(404).send({
+                errorMessage: 'Stock not found'
+            });
+        }
+        updates.forEach((update) => stock[update] = req.body[update]);
+        await stock.save();
+        res.send(stock);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
 //delete a stock by the id
 router.delete('/stocks/:id',auth,async(req, res) => {
     try {
