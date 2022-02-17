@@ -55,6 +55,36 @@ router.post('/user/login', async(req, res) => {
 
 })
 
+//get all users
+router.get('/user/all',async(req,res)=>{
+    try{
+        const users=await User.find({});
+        res.status(200).send(users);
+    }catch(error){
+        res.status(400).send(error);
+    }
+})
+
+//get user by id
+router.get('/user/:id',async(req,res)=>{
+    try{
+        const user=await User.findById(req.params.id);
+        res.status(200).send(user);
+    }catch(error){
+        res.status(400).send(error);
+    }
+})
+
+//get details of logged in user
+router.get('/user/me',auth,async(req,res)=>{
+    try{
+        const user=await User.findById(req.user._id);
+        res.status(200).send(user);
+    }catch(error){
+        res.status(400).send(error);
+    }
+})
+
 router.post('/user/logout', auth, async(req, res) => {
     try {
         const user=req.user;

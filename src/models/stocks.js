@@ -18,6 +18,16 @@ const stockSchema = new mongoose.Schema({
         required:true,
         ref:'User',
     },
+    ltp:{
+        type:Number,
+        required:true,
+        default:0,
+    },
+    profit:{
+        type:Number,
+        required:true,
+        default:0,
+    },
 });
 
 const Stock = mongoose.model('Stock', stockSchema);

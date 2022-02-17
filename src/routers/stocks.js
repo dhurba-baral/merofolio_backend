@@ -1,4 +1,5 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const router = new express.Router();
 const Stock = require('../models/stocks');
 const auth = require('../authentication/auth');
@@ -27,7 +28,7 @@ router.get('/stocks',auth,async(req, res) => {
     }
 })
 
-//update the stock by the id
+//update the stock by the id (nameOfCompany, numberOfShares, price)
 router.patch('/stocks/:id',auth,async(req, res) => {
     const updates = Object.keys(req.body);
     const allowedUpdates = ['nameOfCompany','numberOfShares','price'];
@@ -52,6 +53,57 @@ router.patch('/stocks/:id',auth,async(req, res) => {
     }
 });
 
+//update all stocks (ltp, profit)
+const updateStocks = async () => {
+    //get data from the api
+    const url="https://nepstockapi.herokuapp.com/";
+    const response=await fetch(url);
+    const data = await response.json();
+
+    const stocks = await Stock.find();
+    stocks.forEach(async(stock) => {
+        data.forEach(async(element) => {
+            if(element.Symbol==stock.nameOfCompany){
+                stock.ltp=parseFloat(element.Close.replace(/,/g, ''));
+                stock.profit=stock.numberOfShares*stock.ltp-stock.numberOfShares*stock.price;
+                await stock.save();
+            }
+            else{
+                //console.log("Stock not found");
+            }
+        });
+    });
+    console.log("Stocks updated");
+}
+
+
+// router.patch('/stocks',async(req, res) => {
+//         //get data from the api
+//         const url="https://nepstockapi.herokuapp.com/";
+//         const response=await fetch(url);
+//         const data = await response.json();
+
+//         try{
+//             const stocks = await Stock.find();
+//             stocks.forEach(async(stock) => {
+//                 data.forEach(async(element) => {
+//                     if(element.Symbol==stock.nameOfCompany){
+//                         stock.ltp=parseFloat(element.Close.replace(/,/g, ''));
+//                         stock.profit=stock.numberOfShares*stock.ltp-stock.numberOfShares*stock.price;
+//                         await stock.save();
+//                     }
+//                     else{
+//                         console.log("Stock not found");
+//                     }
+//                 });
+//             })
+//             const allStocks = await Stock.find();
+//             res.status(200).send(allStocks);
+//         }catch(error){
+//             res.status(400).send(error);
+//         }
+// });
+
 //delete a stock by the id
 router.delete('/stocks/:id',auth,async(req, res) => {
     try {
@@ -67,4 +119,8 @@ router.delete('/stocks/:id',auth,async(req, res) => {
     }
 })
 
-module.exports = router;
+module.exports = {
+    router,
+    updateStocks
+}
+
