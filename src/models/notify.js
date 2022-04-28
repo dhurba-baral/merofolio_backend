@@ -16,11 +16,11 @@ const notificationSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
     },
-    // createdBy:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     required:true,
-    //     ref:'User',
-    // }
+    createdBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true,
+        ref:'User',
+    }
 }
     , {
         timestamps:true
