@@ -1,16 +1,16 @@
 const cron = require('node-cron');
-const Notification = require('../models/notify');
+const Notification = require('../models/watchlist');
 const mail = require('./sendemail')
 const axios = require('axios').default;
 
 //check every 30 seconds
-let sendAlert = cron.schedule("*/30 * * * * *", async function () {
+let sendAlert = cron.schedule("* * * * *", async function () {
     try {
         //find every notification
         const notifications = await Notification.find()
         notifications.forEach(async function (notify) {
-            let price = notify.stockprice
-            let stock = notify.stockname
+            let price = notify.targetPrice
+            let stock = notify.nameOfCompany
             let email = notify.email
             axios.get(`http://localhost:3000/api/livedata`)
                 .then(response => {
@@ -22,7 +22,7 @@ let sendAlert = cron.schedule("*/30 * * * * *", async function () {
                                 let text = `The price of ${stock} has reached below your preferred amount of ${price}. The current price is ${asset.Ltp}`
                                 let subject = `${stock} price fell `
                                 console.log(subject)
-                                await mail(email, subject, text)
+                                // await mail(email, subject, text)
                                 await Notification.findByIdAndDelete(notify._id)
                             }
                         }
