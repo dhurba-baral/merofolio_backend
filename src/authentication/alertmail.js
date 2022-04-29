@@ -22,7 +22,7 @@ let sendAlert = cron.schedule("* * * * *", async function () {
                                 let text = `The price of ${stock} has reached below your preferred amount of ${price}. The current price is ${asset.Ltp}`
                                 let subject = `${stock} price fell `
                                 console.log(subject)
-                                // await mail(email, subject, text)
+                                await mail(email, subject, text)
                                 await Notification.findByIdAndDelete(notify._id)
                             }
                         }
