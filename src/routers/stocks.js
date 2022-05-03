@@ -56,7 +56,7 @@ router.patch('/stocks/:id',auth,async(req, res) => {
 //update all stocks (ltp, profit)
 const updateStocks = async () => {
     //get data from the api
-    const url="https://nepstockapi.herokuapp.com/";
+    const url="http://localhost:3000/api/livedata";
     const response=await fetch(url);
     const data = await response.json();
 
@@ -64,8 +64,8 @@ const updateStocks = async () => {
     stocks.forEach(async(stock) => {
         data.forEach(async(element) => {
             if(element.Symbol==stock.nameOfCompany){
-                stock.ltp=parseFloat(element.Close.replace(/,/g, ''));
-                stock.profit=stock.numberOfShares*stock.ltp-stock.numberOfShares*stock.price;
+                stock.close=parseFloat(element.Close.replace(/,/g, ''));
+                stock.profit=stock.numberOfShares*stock.close-stock.numberOfShares*stock.price;
                 await stock.save();
             }
             else{

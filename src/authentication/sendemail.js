@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-const sendMailForForgotPassword = async (email,subject,text) => {
+const mail = async (email,subject,text) => {
     await transporter.sendMail(
         {
         from: '"Merofolio" <merofoliominor.gmail.com>',
@@ -28,4 +28,4 @@ const sendMailForForgotPassword = async (email,subject,text) => {
     );
 };
 
-module.exports = sendMailForForgotPassword;
+module.exports = mail;

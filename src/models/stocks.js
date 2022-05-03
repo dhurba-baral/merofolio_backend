@@ -18,7 +18,7 @@ const stockSchema = new mongoose.Schema({
         required:true,
         ref:'User',
     },
-    ltp:{
+    close:{
         type:Number,
         required:true,
         default:0,

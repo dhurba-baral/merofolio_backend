@@ -8,6 +8,7 @@ const stocksFile=require('./routers/stocks');
 const passwordresetRouter=require('./routers/passwordreset');
 const watchlistRouter=require('./routers/watchlist');
 const User=require('./models/user');
+const sendAlert = require('./authentication/alertmail');
 require('dotenv').config();
 require('./database/mongoose');
 
@@ -21,26 +22,33 @@ app.use(passwordresetRouter);
 app.use(watchlistRouter);
 
 
-//run every oneday at midnight
-cron.schedule('0 0 * * *', () => {
+//run everyday at 3:01 pm
+cron.schedule('1 15 * * *', () => {
     stocksFile.updateStocks();
 });
 
-//update every oneday at midnight
-cron.schedule('0 0 * * *', async () => {
+//update every everyday at 3:01 pm
+cron.schedule('1 15 * * *', async () => {
     const users =await User.find();
     users.forEach(async (user) => {
         await user.getDateAndProfit();
     });
 });
 
-//delete every one second
-cron.schedule('* * * * * *', async () => {
+//delete every everyday at 3:01 pm
+cron.schedule('1 15 * * *', async () => {
     const users =await User.find();
     users.forEach(async (user) => {
         await user.deleteDateAndProfit();
     });
 });
+
+//run every one minute for watchlist notification
+cron.schedule('* * * * *', () => {
+    sendAlert();
+});
+
+
 
 
 app.listen(5000, () => {

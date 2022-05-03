@@ -2,7 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
 const Otp = require('../models/otp')
-const sendMailForForgotPassword = require('../authentication/sendemail');
+const mail = require('../authentication/sendemail');
 
 router.post('/user/sendotp',async (req, res) => {
     try {
@@ -28,7 +28,7 @@ router.post('/user/sendotp',async (req, res) => {
 
         let text = `Use the otp to reset your password ${otp}`
         let subject = `Password reset`
-        await sendMailForForgotPassword(req.body.email, subject, text);
+        await mail(req.body.email, subject, text);
         res.status(201).send({ otp });
 
     } catch (err) {
@@ -57,7 +57,7 @@ router.post('/user/changepassword',async (req, res) => {
 
             let subject = `Password reset successful`
             let text = `Your password was changed on ${date}`
-            await sendMailForForgotPassword(req.body.email, subject, text)
+            await mail(req.body.email, subject, text)
             res.status(201).send(user);
         }
     } catch (err) {
