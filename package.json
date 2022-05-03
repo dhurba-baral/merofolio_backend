@@ -12,8 +12,10 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.5",
     "nodemailer": "^6.7.2",
+    "puppeteer": "^13.6.0",
     "request": "^2.88.2",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "web-push": "^3.4.5"
   },
   "devDependencies": {},
   "scripts": {
