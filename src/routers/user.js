@@ -3,6 +3,10 @@ const router =new express.Router();
 const User=require('../models/user');
 const auth=require('../authentication/auth');
 const bcrypt=require('bcryptjs');
+const Stock=require('../models/stocks');
+const Question = require('../models/question');
+const Reply = require('../models/reply');
+const Watchlist = require('../models/watchlist');
 
 router.post('/user/signup', async(req, res) => {
     const user=new User(req.body);
@@ -123,7 +127,31 @@ router.delete('/user/delete', auth, async(req, res) => {
     try {
         const user=req.user;
         const deletedUser = await User.findByIdAndDelete(user._id);
+        //delete all stocks of user if user is deleted
+        await Stock.deleteMany({createdBy:user._id});
+
+
+        //find all questions by the user
+        const questions=await Question.find({createdBy:user._id});
+        // console.log(questions);
+
+        questions.forEach(async(question)=>{
+            await Reply.deleteMany({question:question._id})
+        })
+        
+        //delete all the questions of user if user is deleted
+        await Question.deleteMany({createdBy:user._id});
+        
+
+
+        //delete all the replies if the user is deleted
+        await Reply.deleteMany({createdBy:user._id});
+
+        //delete the watchlist of the user
+        await Watchlist.deleteMany({createdBy:user._id});
+
         res.status(200).send({user:deletedUser,message:'User deleted successfully'});
+    
     } catch (error) {
         res.status(400).send(error);
     }
