@@ -7,8 +7,10 @@ const replyRouter=require('./routers/reply');
 const stocksFile=require('./routers/stocks');
 const passwordresetRouter=require('./routers/passwordreset');
 const watchlistRouter=require('./routers/watchlist');
+const pushAlert = require('./routers/pushalert')
 const User=require('./models/user');
 const sendAlert = require('./authentication/alertmail');
+const sendProfitAlert = require('./authentication/profitmail');
 require('dotenv').config();
 require('./database/mongoose');
 
@@ -20,6 +22,7 @@ app.use(replyRouter);
 app.use(stocksFile.router);
 app.use(passwordresetRouter);
 app.use(watchlistRouter);
+app.use(pushAlert)
 
 
 //run everyday at 3:01 pm
@@ -48,6 +51,10 @@ cron.schedule('* * * * *', () => {
     sendAlert();
 });
 
+//run everyday at 3:01 pm for profit notification
+cron.schedule('1 15 * * *', () => {
+    sendProfitAlert();
+});
 
 
 

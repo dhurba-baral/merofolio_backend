@@ -3,8 +3,13 @@ const mail = require('./sendemail')
 const axios = require('axios').default;
 const User = require('../models/user');
 const fetch = require('node-fetch');
+const PushNotification = require('../models/pushnotification')
 
-//check every 30 seconds
+const publicVapidKey = "BKUewihHNqZsFYslvLFrIJzokdTWSuCMYwXn39LxdM6P0q8WJ41c8ItvPOozKbxkXOxz97tDyAryq_3oNeTsljw"
+const privateVapidKey = "Kf1LUobWiS-fZBWwDC2uyh9dwO2Y0xGNHoqgj1Y7UoM"
+webPush.setVapidDetails('mailto:test@test.com', publicVapidKey, privateVapidKey)
+
+//check every 1 minute
 const sendAlert = async function () {
     try {
         //find every notification
@@ -33,6 +38,11 @@ const sendAlert = async function () {
                                 let subject = `${stock} price fell `
                                 console.log(subject)
                                 await mail(email, subject, text)
+
+                                //get the subscription created by the user
+                                const subscription = await PushNotification.findById({ createdBy: createdUserId })
+                                const payload = JSON.stringify({ title: "Merofolio" })
+                                await webPush.sendNotification(subscription, payload)
 
                                 //delete watchlist after sending email
                                 await Watchlist.findByIdAndDelete(watch._id)
