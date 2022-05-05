@@ -17,7 +17,7 @@
     "request": "^2.88.2",
     "shelljs": "^0.8.5",
     "validator": "^13.7.0",
-    "web-push": "^3.4.5"
+    "web-push": "^3.5.0"
   },
   "devDependencies": {},
   "scripts": {

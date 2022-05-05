@@ -11,6 +11,13 @@ const Watchlist = require('../models/watchlist');
 router.post('/user/signup', async(req, res) => {
     const user=new User(req.body);
     try {
+
+        //check for unique name
+        const checkUser=await User.findOne({name:req.body.name});
+        if(checkUser){
+            return res.status(400).send({errorMessage:'Username already exists'});
+        }
+
         const checkEmail=await User.findOne({email:req.body.email});
         if(checkEmail){
             res.status(400).send({errorMessage:'Email already exists'});
