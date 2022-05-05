@@ -41,7 +41,7 @@ const sendAlert = async function () {
 
                                 //get the subscription created by the user
                                 const subscription = await PushNotification.findById({ createdBy: createdUserId })
-                                const payload = JSON.stringify({ title: "Merofolio" })
+                                const payload = JSON.stringify({ title: "Merofolio",body:`${stock} price fell` })
                                 await webPush.sendNotification(subscription, payload)
 
                                 //delete watchlist after sending email
