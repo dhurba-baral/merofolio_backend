@@ -46,7 +46,7 @@ cron.schedule('1 15 * * *', async () => {
     });
 });
 
-run every one minute for watchlist notification
+//run every one minute for watchlist notification
 cron.schedule('* * * * *', () => {
     sendAlert();
 });
