@@ -64,8 +64,8 @@ const updateStocks = async () => {
     stocks.forEach(async(stock) => {
         data.forEach(async(element) => {
             if(element.Symbol==stock.nameOfCompany){
-                stock.close=parseFloat(element.Close.replace(/,/g, ''));
-                stock.profit=stock.numberOfShares*stock.close-stock.numberOfShares*stock.price;
+                stock.ltp=parseFloat(element.Ltp.replace(/,/g, ''));
+                stock.profit=stock.numberOfShares*stock.ltp-stock.numberOfShares*stock.price;
                 await stock.save();
             }
             else{
