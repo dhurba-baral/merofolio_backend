@@ -26,31 +26,31 @@ app.use(pushRouter);
 app.use(profitRouter);
 
 
-// //run everyday at 3:01 pm
-// cron.schedule('1 15 * * *', () => {
-//     stocksFile.updateStocks();
-// });
+//run everyday at 3:01 pm
+cron.schedule('1 15 * * *', () => {
+    stocksFile.updateStocks();
+});
 
-// //update every everyday at 3:01 pm
-// cron.schedule('1 15 * * *', async () => {
-//     const users =await User.find();
-//     users.forEach(async (user) => {
-//         await user.getDateAndProfit();
-//     });
-// });
+//update every everyday at 3:01 pm
+cron.schedule('1 15 * * *', async () => {
+    const users =await User.find();
+    users.forEach(async (user) => {
+        await user.getDateAndProfit();
+    });
+});
 
-// //delete every everyday at 3:01 pm
-// cron.schedule('1 15 * * *', async () => {
-//     const users =await User.find();
-//     users.forEach(async (user) => {
-//         await user.deleteDateAndProfit();
-//     });
-// });
+//delete every everyday at 3:01 pm
+cron.schedule('1 15 * * *', async () => {
+    const users =await User.find();
+    users.forEach(async (user) => {
+        await user.deleteDateAndProfit();
+    });
+});
 
-// //run every one minute for watchlist notification
-// cron.schedule('* * * * *', () => {
-//     sendAlert();
-// });
+//run every one minute for watchlist notification
+cron.schedule('* * * * *', () => {
+    sendAlert();
+});
 
 
 
