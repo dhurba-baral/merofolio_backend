@@ -1,6 +1,7 @@
 const express=require('express');
 const cron=require('node-cron');
 const app=express();
+const cors = require('cors')
 const userRouter=require('./routers/user');
 const questionRouter=require('./routers/question');
 const replyRouter=require('./routers/reply');
@@ -14,7 +15,7 @@ const sendAlert = require('./authentication/alertmail');
 require('dotenv').config();
 require('./database/mongoose');
 
-
+app.use(cors())
 app.use(express.json())
 app.use(userRouter);
 app.use(questionRouter);
