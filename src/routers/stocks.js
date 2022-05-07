@@ -39,6 +39,19 @@ router.get('/stocks',auth,async(req, res) => {
     }
 })
 
+//get a stock by id
+router.get('/stocks/:id',auth,async(req, res) => {
+    try {
+        const stock = await Stock.findById(req.params.id);
+        if(!stock){
+            return res.status(404).send();
+        }
+        res.send(stock);
+    } catch (error) {
+        res.status(500).send();
+    }
+})
+
 //update the stock by the id (nameOfCompany, numberOfShares, price)
 router.patch('/stocks/:id',auth,async(req, res) => {
     const updates = Object.keys(req.body);
