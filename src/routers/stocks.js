@@ -10,13 +10,24 @@ router.post('/stocks',auth,async(req, res) => {
         ...req.body,
         createdBy: req.user._id
     });
+
     try {
-        await stock.save();
-        res.status(201).send(stock);
+        //find all the stocks of user by name of company
+        const StocksByNameOfCompany = await Stock.findOne({createdBy: req.user._id, nameOfCompany: req.body.nameOfCompany});
+        console.log(StocksByNameOfCompany);
+        if(StocksByNameOfCompany){
+            StocksByNameOfCompany.price=(StocksByNameOfCompany.price+req.body.price)/2;
+            StocksByNameOfCompany.numberOfShares=StocksByNameOfCompany.numberOfShares+req.body.numberOfShares;
+            await StocksByNameOfCompany.save();
+            res.status(201).send(StocksByNameOfCompany);
+        }else{
+            await stock.save();
+            res.status(201).send(stock);
+        }
     } catch (error) {
         res.status(400).send(error);
     }
-})
+});
 
 //get all the stocks created by the user
 router.get('/stocks',auth,async(req, res) => {
