@@ -28,13 +28,13 @@ app.use(pushRouter);
 app.use(profitRouter);
 
 
-//run everyday at 3:01 pm
-cron.schedule('*/3 * * * *', () => {
+//update stock in every minute
+cron.schedule('* * * * *', () => {
     stocksFile.updateStocks();
 });
 
-//update dashboard profit every 3 minutes
-cron.schedule('*/3 * * * *', async () => {
+//update dashboard profit every minute
+cron.schedule('* * * * *', async () => {
     const users = await User.find();
     users.forEach(async (user) => {
         await user.updateDashboardProfit();

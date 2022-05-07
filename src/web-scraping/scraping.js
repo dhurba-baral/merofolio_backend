@@ -1,7 +1,9 @@
 const puppeteer = require('puppeteer');
 const express =require("express")
+const cron = require('node-cron');
+const shell = require('shelljs');
 const app =express()
-require('./cron.js')
+// require('./cron.js')
 
 async function start(){
     try{
