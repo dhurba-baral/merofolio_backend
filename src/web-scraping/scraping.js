@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
 const express = require("express")
 const app = express()
-require('./cron.js')
+// require('./cron.js')
+process.setMaxListeners(Infinity)
 
 async function start() {
     try {
