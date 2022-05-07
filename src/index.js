@@ -12,6 +12,7 @@ const profitRouter=require('./routers/profit');
 const User=require('./models/user');
 const pushRouter=require('./routers/pushalert');
 const sendAlert = require('./authentication/alertmail');
+const sendProfitAlert = require('./authentication/profitmail');
 require('dotenv').config();
 require('./database/mongoose');
 
@@ -31,6 +32,15 @@ app.use(profitRouter);
 cron.schedule('*/3 * * * *', () => {
     stocksFile.updateStocks();
 });
+
+//update dashboard profit every 3 minutes
+cron.schedule('*/3 * * * *', async () => {
+    const users = await User.find();
+    users.forEach(async (user) => {
+        await user.updateDashboardProfit();
+    });
+});
+
 
 // //update every everyday at 3:01 pm
 // cron.schedule('1 15 * * *', async () => {
@@ -53,6 +63,10 @@ cron.schedule('*/3 * * * *', () => {
 //     sendAlert();
 // });
 
+// //run everyday at 3:01 pm for profit notification
+// cron.schedule('1 15 * * *', () => {
+//     sendProfitAlert();
+// });
 
 
 

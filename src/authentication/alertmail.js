@@ -25,7 +25,7 @@ const sendAlert = async function () {
             let email = user.email
 
             //get data from api
-            const url="http://localhost:3000/api/livedata";
+            const url="http://localhost:3500/api/livedata";
             const response=await fetch(url);
             const data = await response.json();
 

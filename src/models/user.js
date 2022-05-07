@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema({
         date:[],
         totalProfit:[],
     },
+    dashboardProfit: {
+        type:Number,
+    }
 },
 {
         timestamps:true
@@ -101,6 +104,19 @@ userSchema.methods.deleteDateAndProfit=async function(){
         console.log('Total profit deleted.')
     }
 }
+}
+
+//update dashboardProfit
+userSchema.methods.updateDashboardProfit=async function(){
+    const user=this;
+    const stock = await Stock.find({createdBy:user._id});
+    let totalProfit=0;
+    for(let i=0;i<stock.length;i++){
+        totalProfit+=stock[i].profit;
+    }
+    user.dashboardProfit=totalProfit;
+    await user.save();
+    console.log('Dashboard profit updated.')
 }
 
 

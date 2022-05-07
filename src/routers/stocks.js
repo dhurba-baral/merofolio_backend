@@ -56,7 +56,7 @@ router.patch('/stocks/:id',auth,async(req, res) => {
 //update all stocks (ltp, profit)
 const updateStocks = async () => {
     //get data from the api
-    const url="http://localhost:3000/api/livedata";
+    const url="http://localhost:3500/api/livedata";
     const response=await fetch(url);
     const data = await response.json();
 
