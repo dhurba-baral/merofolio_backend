@@ -49,6 +49,15 @@ const userSchema = new mongoose.Schema({
     },
     dashboardProfit: {
         type:Number,
+        default:0,
+    },
+    totalInvestment: {
+        type:Number,
+        default:0,
+    },
+    totalBalance: {
+        type:Number,
+        default:0,
     }
 },
 {
@@ -110,11 +119,20 @@ userSchema.methods.deleteDateAndProfit=async function(){
 userSchema.methods.updateDashboardProfit=async function(){
     const user=this;
     const stock = await Stock.find({createdBy:user._id});
+    
+    //update dashboardProfit,totalInvestment,totalBalance
     let totalProfit=0;
+    let totalInvestment=0;
+    let totalBalance=0;
     for(let i=0;i<stock.length;i++){
         totalProfit+=stock[i].profit;
+        totalInvestment+=stock[i].price*stock[i].numberOfShares;
+        totalBalance+=stock[i].ltp*stock[i].numberOfShares;
     }
     user.dashboardProfit=totalProfit;
+    user.totalInvestment=totalInvestment;
+    user.totalBalance=totalBalance;
+        
     await user.save();
     console.log('Dashboard profit updated.')
 }
