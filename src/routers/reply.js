@@ -39,6 +39,21 @@ router.get('/discussionForum/reply/:id', async (req, res) => {
     }
 })
 
+//get a reply by the id
+router.get('/reply/:id', async (req, res) => {
+    try {
+        const reply = await Reply.findById(req.params.id);
+        if (!reply) {
+            return res.status(404).send({
+                errorMessage: 'Reply by the id not found'
+            });
+        }
+        res.status(200).send(reply);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+})
+
 //update the reply by the id
 router.patch('/discussionForum/reply/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body);
