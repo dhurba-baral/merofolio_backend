@@ -26,8 +26,6 @@ router.get('/watchlist',auth,async(req, res) => {
     }
 });
 
-
-
 //delete a watchlist by the id
 router.delete('/watchlist/:id',auth,async(req, res) => {
     try {

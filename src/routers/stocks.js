@@ -16,8 +16,8 @@ router.post('/stocks',auth,async(req, res) => {
         const StocksByNameOfCompany = await Stock.findOne({createdBy: req.user._id, nameOfCompany: req.body.nameOfCompany});
         console.log(StocksByNameOfCompany);
         if(StocksByNameOfCompany){
-            StocksByNameOfCompany.price=(StocksByNameOfCompany.price+req.body.price)/2;
-            StocksByNameOfCompany.numberOfShares=StocksByNameOfCompany.numberOfShares+req.body.numberOfShares;
+            StocksByNameOfCompany.price=(StocksByNameOfCompany.price+Number(req.body.price))/2;
+            StocksByNameOfCompany.numberOfShares=StocksByNameOfCompany.numberOfShares+Number(req.body.numberOfShares);
             await StocksByNameOfCompany.save();
             res.status(201).send(StocksByNameOfCompany);
         }else{

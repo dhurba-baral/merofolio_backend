@@ -10,6 +10,7 @@ const passwordresetRouter=require('./routers/passwordreset');
 const watchlistRouter=require('./routers/watchlist');
 const profitRouter=require('./routers/profit');
 const User=require('./models/user');
+const Watchlist = require('./models/watchlist');
 const pushRouter=require('./routers/pushalert');
 const sendAlert = require('./authentication/alertmail');
 const sendProfitAlert = require('./authentication/profitmail');
@@ -28,18 +29,18 @@ app.use(pushRouter);
 app.use(profitRouter);
 
 
-//update stock in every minute
-cron.schedule('* * * * *', () => {
-    stocksFile.updateStocks();
-});
+// //update stock in every minute
+// cron.schedule('* * * * *', () => {
+//     stocksFile.updateStocks();
+// });
 
-//update dashboard profit every minute
-cron.schedule('* * * * *', async () => {
-    const users = await User.find();
-    users.forEach(async (user) => {
-        await user.updateDashboardProfit();
-    });
-});
+// //update dashboard profit every minute
+// cron.schedule('* * * * *', async () => {
+//     const users = await User.find();
+//     users.forEach(async (user) => {
+//         await user.updateDashboardProfit();
+//     });
+// });
 
 
 // //update every everyday at 3:01 pm
@@ -58,15 +59,16 @@ cron.schedule('* * * * *', async () => {
 //     });
 // });
 
-// //run every one minute for watchlist notification
+//run every one minute for watchlist notification
 // cron.schedule('* * * * *', () => {
 //     sendAlert();
 // });
 
 // //run everyday at 3:01 pm for profit notification
-// cron.schedule('1 15 * * *', () => {
+// cron.schedule('* * * * *', () => {
 //     sendProfitAlert();
 // });
+
 
 
 

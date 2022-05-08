@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const fetch = require('node-fetch');
 
 
 const watchlistSchema = new mongoose.Schema({
@@ -19,5 +20,6 @@ const watchlistSchema = new mongoose.Schema({
 
 const Watchlist = mongoose.model('Watchlist', watchlistSchema);
 module.exports = Watchlist;
+
 
 

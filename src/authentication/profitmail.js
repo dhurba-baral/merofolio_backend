@@ -21,7 +21,7 @@ const sendProfitAlert = async function () {
             let email = user.email
             //get the profit of user
             // let totalProfit = user.graphdata.totalProfit.slice(-1).pop()
-            let totalProfit = user.graphdata.totalProfit[user.graphdata.totalProfit.length-1] 
+            let totalProfit = user.dashboardProfit
             if (totalProfit >= profit){
                 let text = `Your portfolio has reached the preferred profit of ${profit}. Your portfolio is currently at a profit of ${totalProfit}`;
                 let subject = `Profit reached`
