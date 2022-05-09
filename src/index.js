@@ -11,7 +11,7 @@ const watchlistRouter=require('./routers/watchlist');
 const profitRouter=require('./routers/profit');
 const User=require('./models/user');
 const Watchlist = require('./models/watchlist');
-const pushRouter=require('./routers/pushalert');
+// const pushRouter=require('./routers/pushalert');
 const sendAlert = require('./authentication/alertmail');
 const sendProfitAlert = require('./authentication/profitmail');
 require('dotenv').config();
@@ -25,7 +25,7 @@ app.use(replyRouter);
 app.use(stocksFile.router);
 app.use(passwordresetRouter);
 app.use(watchlistRouter);
-app.use(pushRouter);
+// app.use(pushRouter);
 app.use(profitRouter);
 
 
@@ -59,7 +59,7 @@ app.use(profitRouter);
 //     });
 // });
 
-//run every one minute for watchlist notification
+// //run every one minute for watchlist notification
 // cron.schedule('* * * * *', () => {
 //     sendAlert();
 // });
